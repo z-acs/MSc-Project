@@ -31,6 +31,18 @@ def parse_temporal_series(series):
     return pd.to_datetime(series, errors="coerce", format="mixed", dayfirst=True)
 
 
+def read_csv_file(uploaded_file):
+    """Read a CSV using common encodings without changing the uploaded data."""
+    last_error = None
+    for encoding in ("utf-8", "utf-8-sig", "cp1252", "latin1"):
+        try:
+            uploaded_file.seek(0)
+            return pd.read_csv(uploaded_file, encoding=encoding)
+        except UnicodeDecodeError as error:
+            last_error = error
+    raise last_error
+
+
 def detect_variable_type(series):
     if pd.api.types.is_numeric_dtype(series):
         return "Numerical"
@@ -359,7 +371,7 @@ if uploaded_file is None:
     st.info("Please upload a CSV file to begin.")
     st.stop()
 try:
-    df = pd.read_csv(uploaded_file)
+    df = read_csv_file(uploaded_file)
     st.success("Dataset uploaded successfully.")
 except Exception as e:
     st.error(f"Unable to read the CSV file: {e}")
@@ -377,7 +389,7 @@ with col1:
 with col2:
     st.metric("Total Columns", columns)
 PREVIEW_ROWS = PREVIEW_COLUMNS = 8
-preview_df = df.iloc[:min(PREVIEW_ROWS, rows), :min(PREVIEW_COLUMNS, columns)]
+preview_df = df.iloc[:PREVIEW_ROWS, :PREVIEW_COLUMNS]
 st.subheader("Dataset Preview")
 st.caption(
     f"Showing the first {min(PREVIEW_ROWS, rows)} rows and {min(PREVIEW_COLUMNS, columns)} columns of a dataset containing "
@@ -464,7 +476,7 @@ for c in selected_temporal_columns:
             converted = parse_temporal_series(filtered_df[c])
             filtered_df = filtered_df[(converted.dt.date >= start_date) & (converted.dt.date <= end_date)]
 
-if len(filtered_df) == 0:
+if filtered_df.empty:
     st.warning("The selected filters produced no rows. Please adjust the filters to continue.")
     st.stop()
 elif len(filtered_df) < len(df):
