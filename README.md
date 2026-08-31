@@ -34,8 +34,19 @@ pip install -r requirements.txt
 Run the application with:
 streamlit run app.py
 
+## Datasets
+
+Two public datasets were used to evaluate the prototype:
+
+- `hotel_bookings.csv` - Hotel Booking Demand dataset, used as the primary case study.
+- `hour.csv` - Bike Sharing Dataset, used for cross-dataset validation.
+
+The datasets are included to support reproducibility of the evaluation described in the dissertation.
+
 ## Repository Files
 
 app.py - Main Streamlit application
 test_datasets.py - Script used to prepare datasets for performance testing
 requirements.txt - Required Python packages
+hotel_bookings.csv - Dataset used for the primary case study  
+hour.csv - Dataset used for cross-dataset validation
