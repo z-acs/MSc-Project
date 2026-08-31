@@ -45,8 +45,8 @@ The datasets are included to support reproducibility of the evaluation described
 
 ## Repository Files
 
-app.py - Main Streamlit application.
-test_datasets.py - Script used to prepare datasets for performance testing.
-requirements.txt - Required Python packages.
-hotel_bookings.csv - Dataset used for the primary case study  .
-hour.csv - Dataset used for cross-dataset validation.
+- app.py - Main Streamlit application.
+- test_datasets.py - Script used to prepare datasets for performance testing.
+- requirements.txt - Required Python packages.
+- hotel_bookings.csv - Dataset used for the primary case study  .
+- hour.csv - Dataset used for cross-dataset validation.
